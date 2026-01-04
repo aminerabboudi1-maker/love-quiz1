@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>For You 💗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🎵 Background Music -->
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_54c8c4c2c6.mp3?filename=romantic-piano-ambient-125566.mp3" type="audio/mpeg">
+  </audio>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Comic Sans MS", sans-serif;
+      background: linear-gradient(135deg, #ffd6e8, #ffeaf4);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff0f6;
+      border-radius: 26px;
+      padding: 26px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 25px 50px rgba(255, 105, 180, 0.25);
+      text-align: center;
+    }
+
+    h2 {
+      color: #d63384;
+      margin-bottom: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 13px;
+      margin-top: 12px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #ff69b4, #ff85c1);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(255,105,180,0.3);
+    }
+
+    .btn:hover {
+      transform: scale(1.03);
+    }
+
+    .option {
+      background: white;
+      border: 2px solid #ffb6d5;
+      color: #d63384;
+    }
+
+    /* 💕 BEAUTIFUL "OTHER" INPUT */
+    .other-input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 999px;
+      border: 2px solid #ffb6d5;
+      margin-top: 14px;
+      font-size: 15px;
+      text-align: center;
+      background: linear-gradient(135deg, #fff, #ffeaf4);
+      box-shadow: inset 0 2px 6px rgba(255,182,213,0.4);
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .other-input:focus {
+      border-color: #ff69b4;
+      box-shadow: 0 0 12px rgba(255,105,180,0.6);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #ff69b4;
+    }
+
+    .red {
+      color: #e03131;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .small {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #ff8fb1;
+    }
+
+    .answer {
+      text-align: left;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card" id="app"></div>
+
+  <script>
+    const PASSWORD = "MMUAH";
+    const music = document.getElementById("bg-music");
+
+    const questions = [
+      { type: "scale", text: "Firstlyyyyyy, how much do you honestly love me?" },
+      { text: "When you miss me, what do you want most?", options: ["Hug me", "Call me", "See me in person"] },
+      { text: "What’s your favorite way I show love?", options: ["Words", "Actions", "Physical affection"] },
+      { text: "If we had free time right now, what would you choose?", options: ["Cuddle and talk", "Go out together", "Night walk together"] },
+      { text: "What makes you smile faster when it’s from me?", options: ["A sweet text", "My voice", "Seeing my face"] },
+      { text: "How do you feel when I hug you?", options: ["Safe", "Happy", "All of the above"] },
+      { text: "What’s your favorite “us” moment?", options: ["Laughing together", "Watching together", "Late night talks together"] },
+      { text: "If I surprised you, you’d prefer… (I know your answer already)", options: ["A love letter", "A thoughtful gift", "Stocks of ramen"] },
+      { text: "What do you crave more from me?", options: ["Reassurance", "Attention", "Affection"] },
+      { text: "When you think about me, you feel…", options: ["Warm", "Loved", "Miss me"] }
+    ];
+
+    let current = 0;
+    let answers = [];
+    let attempts = 0;
+    let unlocked = false;
+
+    const app = document.getElementById("app");
+
+    function passwordScreen() {
+      app.innerHTML = `
+        <h2>🔒 Secret Entrance 💗</h2>
+        <p style="color:#d63384">Only someone special knows the password</p>
+        <input class="other-input" id="pw" placeholder="Enter password…" />
+        <button class="btn">Unlock 💖</button>
+        <div id="error" class="red"></div>
+      `;
+
+      document.querySelector(".btn").onclick = () => {
+        const val = document.getElementById("pw").value;
+        if (val === PASSWORD) {
+          unlocked = true;
+          music.volume = 0.4;
+          music.play();
+          render();
+        } else {
+          document.getElementById("error").textContent = "Hmm… that’s not it 💭";
+        }
+      };
+    }
+
+    function render() {
+      if (!unlocked) {
+        passwordScreen();
+        return;
+      }
+
+      app.innerHTML = "";
+
+      if (current >= questions.length) {
+        app.innerHTML = `
+          <h2>A Letter For You 💌</h2>
+          <p style="color:#d63384; line-height:1.6">
+            My love,<br><br>
+            I made this little quiz not to test you — but to smile at every answer you gave.
+            Every click, every feeling, every choice reminded me how lucky I am.
+            No matter what you picked… you picked <b>us</b>.
+            <br><br>
+            And I choose you. Always.
+          </p>
+
+          ${answers.map(a => `
+            <div class="answer">
+              <b>${a.q}</b><br/>💗 ${a.a}
+            </div>
+          `).join("")}
+
+          <p class="small">Forever yours 💗</p>
+        `;
+        return;
+      }
+
+      const q = questions[current];
+      app.innerHTML = `<h2>${q.text}</h2>`;
+
+      if (q.type === "scale") {
+        let value = 100;
+
+        app.innerHTML += `
+          <div style="font-size:32px;color:#ff69b4">${value}%</div>
+          <input type="range" min="0" max="100" value="100" />
+          <div id="msg"></div>
+          <button class="btn">Continue 💖</button>
+        `;
+
+        const range = app.querySelector("input");
+        const msg = app.querySelector("#msg");
+        const btn = app.querySelector(".btn");
+
+        range.oninput = () => app.querySelector("div").textContent = range.value + "%";
+
+        btn.onclick = () => {
+          if (range.value == 100) {
+            answers.push({ q: q.text, a: range.value + "%" });
+            current++;
+            render();
+          } else {
+            attempts++;
+            msg.className = "red";
+            msg.textContent =
+              attempts === 1 ? "Haha I know you're playing.." :
+              attempts === 2 ? "Actually..?" :
+              "Alright then :'(";
+            if (attempts >= 3) {
+              answers.push({ q: q.text, a: range.value + "%" });
+              current++;
+              render();
+            }
+          }
+        };
+      } else {
+        q.options.forEach(opt => {
+          const b = document.createElement("button");
+          b.className = "btn option";
+          b.textContent = opt;
+          b.onclick = () => {
+            answers.push({ q: q.text, a: opt });
+            current++;
+            render();
+          };
+          app.appendChild(b);
+        });
+
+        const input = document.createElement("input");
+        input.className = "other-input";
+        input.placeholder = "Something else from your heart…";
+        app.appendChild(input);
+
+        const btn = document.createElement("button");
+        btn.className = "btn";
+        btn.textContent = "Continue 💖";
+        btn.onclick = () => {
+          answers.push({ q: q.text, a: input.value || "—" });
+          current++;
+          render();
+        };
+        app.appendChild(btn);
+      }
+
+      app.innerHTML += `<div class="small">${current + 1} / ${questions.length}</div>`;
+    }
+
+    render();
+  </script>
+</body>
+</html>
