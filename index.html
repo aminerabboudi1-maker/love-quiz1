@@ -1,291 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>For You 💗</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>Love Quiz 💗</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- 🎵 Background Music -->
-  <audio id="bg-music" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_54c8c4c2c6.mp3?filename=romantic-piano-ambient-125566.mp3" type="audio/mpeg">
-  </audio>
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #ffd6e8, #ffeaf4);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
 
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", "Comic Sans MS", sans-serif;
-      background: linear-gradient(135deg, #ffd6e8, #ffeaf4);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+/* 💞 Floating hearts */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  animation: floatUp linear infinite;
+  opacity: 0.8;
+  pointer-events: none;
+}
 
-    /* 💞 FLOATING HEARTS */
-    .heart {
-      position: fixed;
-      bottom: -40px;
-      font-size: 24px;
-      animation: floatUp linear infinite;
-      opacity: 0.8;
-      pointer-events: none;
-    }
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 0.8; }
+  to { transform: translateY(-110vh); opacity: 0; }
+}
 
-    @keyframes floatUp {
-      from { transform: translateY(0); opacity: 0.8; }
-      to { transform: translateY(-110vh); opacity: 0; }
-    }
+.card {
+  background: #fff0f6;
+  border-radius: 28px;
+  padding: 26px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(255,105,180,.25);
+  z-index: 2;
+}
 
-    .card {
-      background: #fff0f6;
-      border-radius: 28px;
-      padding: 28px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 25px 50px rgba(255, 105, 180, 0.25);
-      text-align: center;
-      z-index: 10;
-    }
+h2 {
+  color: #d63384;
+}
 
-    h2 {
-      color: #d63384;
-      margin-bottom: 14px;
-    }
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 999px;
+  border: none;
+  background: #ff69b4;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-    .btn {
-      width: 100%;
-      padding: 14px;
-      margin-top: 14px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, #ff69b4, #ff85c1);
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+button:hover {
+  background: #ff85c1;
+}
 
-    .btn:hover {
-      transform: scale(1.03);
-    }
+input[type="range"] {
+  width: 100%;
+  margin-top: 10px;
+  accent-color: #ff69b4;
+}
 
-    .option {
-      background: white;
-      border: 2px solid #ffb6d5;
-      color: #d63384;
-    }
+.other {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 999px;
+  border: 2px solid #ffb6d5;
+  text-align: center;
+  font-size: 15px;
+}
 
-    .other-input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 999px;
-      border: 2px solid #ffb6d5;
-      margin-top: 14px;
-      font-size: 15px;
-      text-align: center;
-      background: linear-gradient(135deg, #fff, #ffeaf4);
-      outline: none;
-    }
-
-    .other-input:focus {
-      border-color: #ff69b4;
-      box-shadow: 0 0 12px rgba(255,105,180,0.6);
-    }
-
-    input[type="range"] {
-      width: 100%;
-      accent-color: #ff69b4;
-    }
-
-    .red {
-      color: #e03131;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .small {
-      margin-top: 14px;
-      font-size: 14px;
-      color: #ff8fb1;
-    }
-
-    .answer {
-      text-align: left;
-      margin-top: 10px;
-    }
-
-    /* 🔒 PASSWORD CENTERING */
-    .password-box {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      align-items: center;
-    }
-  </style>
+.small {
+  margin-top: 12px;
+  color: #ff8fb1;
+  font-size: 14px;
+}
+</style>
 </head>
 
 <body>
-  <div class="card" id="app"></div>
+<div class="card" id="app"></div>
 
-  <script>
-    /* 💞 HEARTS */
-    setInterval(() => {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.textContent = "💞";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = 6 + Math.random() * 4 + "s";
-      heart.style.fontSize = 18 + Math.random() * 20 + "px";
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 10000);
-    }, 600);
+<script>
+/* 💞 hearts */
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.textContent = "💞";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = 16 + Math.random() * 20 + "px";
+  h.style.animationDuration = 6 + Math.random() * 4 + "s";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 9000);
+}, 600);
 
-    const PASSWORD = "MMUAH";
-    const music = document.getElementById("bg-music");
+/* quiz data */
+const questions = [
+  { type: "scale", q: "Firstlyyyyyy, how much do you honestly love me?" },
+  { q: "When you miss me, what do you want most?", o: ["Hug me", "Call me", "See me"] },
+  { q: "What’s your favorite way I show love?", o: ["Words", "Actions", "Affection"] }
+];
 
-    const questions = [
-      { type: "scale", text: "Firstlyyyyyy, how much do you honestly love me?" },
-      { text: "When you miss me, what do you want most?", options: ["Hug me", "Call me", "See me in person"] },
-      { text: "What’s your favorite way I show love?", options: ["Words", "Actions", "Physical affection"] },
-      { text: "If we had free time right now, what would you choose?", options: ["Cuddle and talk", "Go out together", "Night walk together"] },
-      { text: "What makes you smile faster when it’s from me?", options: ["A sweet text", "My voice", "Seeing my face"] },
-      { text: "How do you feel when I hug you?", options: ["Safe", "Happy", "All of the above"] },
-      { text: "What’s your favorite “us” moment?", options: ["Laughing together", "Watching together", "Late night talks together"] },
-      { text: "If I surprised you, you’d prefer… (I know your answer already)", options: ["A love letter", "A thoughtful gift", "Stocks of ramen"] },
-      { text: "What do you crave more from me?", options: ["Reassurance", "Attention", "Affection"] },
-      { text: "When you think about me, you feel…", options: ["Warm", "Loved", "Miss me"] }
-    ];
+let index = 0;
+let answers = [];
+const app = document.getElementById("app");
 
-    let current = 0;
-    let answers = [];
-    let attempts = 0;
-    let unlocked = false;
+function render() {
+  app.innerHTML = "";
 
-    const app = document.getElementById("app");
+  if (index >= questions.length) {
+    app.innerHTML = `
+      <h2>A Letter For You 💌</h2>
+      <p style="color:#d63384; line-height:1.6">
+        My love,<br><br>
+        This quiz wasn’t to test you.
+        It was to smile at every answer.
+        <br><br>
+        I choose you. Always.
+      </p>
+      ${answers.map(a => `<p><b>${a.q}</b><br>💗 ${a.a}</p>`).join("")}
+    `;
+    return;
+  }
 
-    function passwordScreen() {
-      app.innerHTML = `
-        <h2>🔒 Secret Entrance 💗</h2>
-        <div class="password-box">
-          <p style="color:#d63384">Only someone special knows the password</p>
-          <input class="other-input" id="pw" placeholder="Enter password…" />
-          <button class="btn" id="unlock">Unlock 💖</button>
-          <div id="error" class="red"></div>
-        </div>
-      `;
+  const q = questions[index];
+  app.innerHTML = `<h2>${q.q}</h2>`;
 
-      document.getElementById("unlock").onclick = () => {
-        const val = document.getElementById("pw").value;
-        if (val === PASSWORD) {
-          unlocked = true;
-          music.volume = 0.4;
-          music.play();
-          render();
-        } else {
-          document.getElementById("error").textContent = "Hmm… that’s not it 💭";
-        }
+  /* FIRST QUESTION — FIXED */
+  if (q.type === "scale") {
+    app.innerHTML += `
+      <div id="val" style="font-size:32px;color:#ff69b4">100%</div>
+      <input id="range" type="range" min="0" max="100" value="100">
+      <button id="go">Continue 💖</button>
+    `;
+
+    document.getElementById("range").oninput = e =>
+      document.getElementById("val").textContent = e.target.value + "%";
+
+    document.getElementById("go").onclick = () => {
+      const v = document.getElementById("range").value;
+      answers.push({ q: q.q, a: v + "%" });
+      index++;              // ← THIS NOW ALWAYS RUNS
+      render();
+    };
+  }
+
+  /* OTHER QUESTIONS */
+  if (q.o) {
+    q.o.forEach(opt => {
+      const b = document.createElement("button");
+      b.textContent = opt;
+      b.onclick = () => {
+        answers.push({ q: q.q, a: opt });
+        index++;
+        render();
       };
-    }
+      app.appendChild(b);
+    });
 
-    function render() {
-      if (!unlocked) {
-        passwordScreen();
-        return;
-      }
+    const input = document.createElement("input");
+    input.className = "other";
+    input.placeholder = "Other…";
+    app.appendChild(input);
 
-      app.innerHTML = "";
+    const cont = document.createElement("button");
+    cont.textContent = "Continue 💖";
+    cont.onclick = () => {
+      answers.push({ q: q.q, a: input.value || "—" });
+      index++;
+      render();
+    };
+    app.appendChild(cont);
+  }
 
-      if (current >= questions.length) {
-        app.innerHTML = `
-          <h2>A Letter For You 💌</h2>
-          <p style="color:#d63384; line-height:1.6">
-            My love,<br><br>
-            I made this little quiz not to test you — but to smile at every answer you gave.
-            No matter what you picked… you picked <b>us</b>.
-            <br><br>
-            And I choose you. Always.
-          </p>
-          ${answers.map(a => `
-            <div class="answer">
-              <b>${a.q}</b><br/>💗 ${a.a}
-            </div>
-          `).join("")}
-          <p class="small">Forever yours 💗</p>
-        `;
-        return;
-      }
+  app.innerHTML += `<div class="small">${index + 1} / ${questions.length}</div>`;
+}
 
-      const q = questions[current];
-      app.innerHTML = `<h2>${q.text}</h2>`;
-
-      if (q.type === "scale") {
-        attempts = 0;
-        app.innerHTML += `
-          <div id="scaleValue" style="font-size:32px;color:#ff69b4">100%</div>
-          <input id="scale" type="range" min="0" max="100" value="100" />
-          <div id="msg"></div>
-          <button class="btn" id="next">Continue 💖</button>
-        `;
-
-        document.getElementById("scale").oninput = e =>
-          document.getElementById("scaleValue").textContent = e.target.value + "%";
-
-        document.getElementById("next").onclick = () => {
-          const val = document.getElementById("scale").value;
-          const msg = document.getElementById("msg");
-
-          if (val == 100) {
-            answers.push({ q: q.text, a: val + "%" });
-            current++;
-            render();
-          } else {
-            attempts++;
-            msg.className = "red";
-            msg.textContent =
-              attempts === 1 ? "Haha I know you're playing.." :
-              attempts === 2 ? "Actually..?" :
-              "Alright then :'(";
-
-            if (attempts >= 3) {
-              answers.push({ q: q.text, a: val + "%" });
-              current++;
-              render();
-            }
-          }
-        };
-      } else {
-        q.options.forEach(opt => {
-          const b = document.createElement("button");
-          b.className = "btn option";
-          b.textContent = opt;
-          b.onclick = () => {
-            answers.push({ q: q.text, a: opt });
-            current++;
-            render();
-          };
-          app.appendChild(b);
-        });
-
-        const input = document.createElement("input");
-        input.className = "other-input";
-        input.placeholder = "Something else from your heart…";
-        app.appendChild(input);
-
-        const btn = document.createElement("button");
-        btn.className = "btn";
-        btn.textContent = "Continue 💖";
-        btn.onclick = () => {
-          answers.push({ q: q.text, a: input.value || "—" });
-          current++;
-          render();
-        };
-        app.appendChild(btn);
-      }
-
-      app.innerHTML += `<div class="small">${current + 1} / ${questions.length}</div>`;
-    }
-
-    render();
-  </script>
+render();
+</script>
 </body>
 </html>
